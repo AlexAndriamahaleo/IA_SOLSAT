@@ -1,0 +1,11 @@
+
+
+SOLSAT/*
+SOLSAT_C/dames/*
+SOLSAT_C/pigeons/*
+.idea/
+cmake-build-debug/*
+*.txt
+a.out
+infix2postfix.c
+*.pdf
