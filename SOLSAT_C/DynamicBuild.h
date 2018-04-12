@@ -28,6 +28,7 @@ public:
 
     //Etat des littéraux
     const vector<int> &getLitteralState() const;
+    void setLitteralState_i(int i, int value);
     void exploreBranchOfLitteral(int litteral);
 
 

@@ -68,7 +68,7 @@ int main() {
     problemInstance.initInstance(initProblem);
     //problemInstance.displayInstance();
 
-    bool formulaResultat = solutionInstance.solverdpll(problemInstance, initProblem);
+    bool formulaResultat = solutionInstance.solverdpll(&problemInstance, &initProblem);
 
     cout << (formulaResultat ? "SATIFAISABLE" : "UNSATISFAISABLE") << endl ;
 

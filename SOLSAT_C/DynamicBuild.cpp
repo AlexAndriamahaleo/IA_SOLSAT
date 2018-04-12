@@ -37,8 +37,10 @@ bool DynamicBuild::isClauseSAT(int clause) {
 
 bool DynamicBuild::containsEmptyClause() {
     for (int i = 0; i < clausesState.size(); ++i) {
-        if(clausesLength[i] == 0)
+        if(clausesLength[i] == 0 && clausesState[i] == 0){
+            cout << "La clause " << i << " est vide" << endl ;
             return true ;
+        }
     }
     return false ;
 }
@@ -74,9 +76,16 @@ void DynamicBuild::exploreBranchOfLitteral(int litteral) {
 
 bool DynamicBuild::allVariableTested() {
     for (int i : litteralState) {
-        if(i != 2)
+        if(i == 0)
             return false ;
     }
+
+    for (auto &&j : clausesState) {
+        if(j == 0)
+            return false ;
+    }
+
+    return true ;
 }
 
 bool DynamicBuild::isFormulaIsSAT() {
@@ -97,6 +106,10 @@ const vector<int> &DynamicBuild::getClausesLength() const {
 
 const vector<int> &DynamicBuild::getLitteralState() const {
     return litteralState;
+}
+
+void DynamicBuild::setLitteralState_i(int i, int value) {
+    litteralState[i] = value ;
 }
 
 void DynamicBuild::displayInstance() {
@@ -125,14 +138,17 @@ void DynamicBuild::displayClauseLength() {
 
 void DynamicBuild::displayLitteralState() {
     for (int k = 0; k < litteralState.size(); ++k) {
+
         cout << "Le litteral " << k ;
         if(litteralState[k] == 0)
             cout<< " est inexploré" << endl ;
-        if(litteralState[k] == 1) {
+
+        if(litteralState[k] == 1)
             cout<< " a été exploré sur la branche POSITIVE" << endl ;
+
         if(litteralState[k] == 2)
             cout<< " a été exploré sur la branche NEGATIVE" << endl ;
-        }
+
     }
 }
 
