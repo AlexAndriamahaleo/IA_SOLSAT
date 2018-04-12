@@ -10,7 +10,7 @@ int SolutionsFromDPLL::searchMonolitteral(DynamicBuild *data, ConstantBuild *ini
             cout << "La clause " << i << " contient un mono litteral" << endl ;
 
             for (int j : init->getClausesToLitterals()[i]) {
-                if(j != abs(currentAffection.top()))
+                if(abs(j) != abs(currentAffection.top()))
                     return j;
             }
         }
@@ -24,12 +24,12 @@ int SolutionsFromDPLL::searchPureLitterals(DynamicBuild *data, ConstantBuild *in
         if(data->getLitteralState()[i] == 0){
             if((i%2) == 0){
                 if(init->getVariablesOccurence()[i+1] == 0){
-                    cout << "littéra pur trouvé " << i << " !!" << endl ;
+                    cout << "littéral pur trouvé " << i << " !!" << endl ;
                     return i ;
                 }
             } else {
                 if(init->getVariablesOccurence()[i-1] == 0){
-                    cout << "littéra pur trouvé " << i << " !!" << endl ;
+                    cout << "littéral pur trouvé " << i << " !!" << endl ;
                     return i ;
                 }
             }
@@ -99,12 +99,12 @@ void SolutionsFromDPLL::propagation(int litteral_i, DynamicBuild *data, Constant
                 "On diminue les clauses qui contiennent " << litteral_i+1 << endl ;
 
         // RECHERCHE DES CLAUSES QUI CONTIENNEENT SON OPPOSÉ, FAIRE DIMINUER LA CLAUSE DE 1
-        for (int j = 0; j < init->getLitteralsToClauses()[litteral_i].size(); ++j) {
+        for (int j = 0; j < init->getLitteralsToClauses()[litteral_i+1].size(); ++j) {
 
             if(!is_back)
-                data->decreaseClauseLength(init->getLitteralsToClauses()[litteral_i][j]);
+                data->decreaseClauseLength(init->getLitteralsToClauses()[litteral_i+1][j]);
             else
-                data->increaseClauseLength(init->getLitteralsToClauses()[litteral_i][j]);
+                data->increaseClauseLength(init->getLitteralsToClauses()[litteral_i+1][j]);
         }
 
     } else { // IMPAIR
@@ -122,9 +122,9 @@ void SolutionsFromDPLL::propagation(int litteral_i, DynamicBuild *data, Constant
         for (int j = 0; j < init->getLitteralsToClauses()[litteral_i-1].size(); ++j) {
 
             if(!is_back)
-                data->decreaseClauseLength(init->getLitteralsToClauses()[litteral_i][j]);
+                data->decreaseClauseLength(init->getLitteralsToClauses()[litteral_i-1][j]);
             else
-                data->increaseClauseLength(init->getLitteralsToClauses()[litteral_i][j]);
+                data->increaseClauseLength(init->getLitteralsToClauses()[litteral_i-1][j]);
         }
     }
 }
@@ -141,7 +141,7 @@ bool SolutionsFromDPLL::solverdpll(DynamicBuild *pb, ConstantBuild *init) {
 
         cout << "----------------- DEBUT DE BOUCLE -------------------" << endl ;
 
-        pb->displayInstance();
+        //pb->displayInstance();
 
         displayCurrentSolution();
 
@@ -186,6 +186,9 @@ bool SolutionsFromDPLL::solverdpll(DynamicBuild *pb, ConstantBuild *init) {
 
             }
         }
+
+        pb->displayInstance();
+
 
 
         if(pb->containsEmptyClause() ){
