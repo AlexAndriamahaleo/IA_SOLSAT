@@ -37,10 +37,18 @@ public:
 
     void displayLitteralToClause();
 
+    void displayVariablesOccurence();
+
+    void displayCbInstance();
+
+    const vector<int> &getVariablesOccurence() const;
+
+    void setVariablesOccurence(const vector<int> &variablesOccurence);
 
 private:
     vector<vector< int > > clausesToLitterals ;
     vector<vector< int > > litteralsToClauses ;
+    vector< int > variablesOccurence ;
     int nbClauses ;
     int nbLitterals ;
     int nbVariables ;

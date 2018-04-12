@@ -57,11 +57,21 @@ int main() {
     const char* filename = prefix.c_str() ;
 
     ConstantBuild initProblem;
+    DynamicBuild problemInstance;
+    SolutionsFromDPLL solutionInstance;
 
     initProblem = formulasReader(filename);
 
-    initProblem.displayClauseToLitteral();
-    initProblem.displayLitteralToClause();
+    //initProblem.displayClauseToLitteral();
+    //initProblem.displayLitteralToClause();
+
+    problemInstance.initInstance(initProblem);
+    //problemInstance.displayInstance();
+
+    bool formulaResultat = solutionInstance.solverdpll(problemInstance, initProblem);
+
+    cout << (formulaResultat ? "SATIFAISABLE" : "UNSATISFAISABLE") << endl ;
+
 
     return 0;
 }

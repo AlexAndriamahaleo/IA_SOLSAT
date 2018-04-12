@@ -4,7 +4,7 @@
 
 #include "QueensFactory.h"
 
-QueensFactory::QueensFactory() {}
+QueensFactory::QueensFactory() = default;
 
 int QueensFactory::getNbQueens() const {
     return nbQueens;
@@ -153,7 +153,7 @@ void QueensFactory::queensFactoryInstance(int nbQueens){
         }
     }
 
-    cout << "nombre de clause écrite: " << nbClause << endl ;
+    //cout << "nombre de clause écrite: " << nbClause << endl ;
 
     fileout.close();
 

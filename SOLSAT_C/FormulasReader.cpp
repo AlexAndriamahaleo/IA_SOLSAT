@@ -23,6 +23,8 @@ ConstantBuild formulasReader(const char* filename){
     vector< vector < int > > myLitterals ;
     vector<int > litterals ;
 
+    vector<int> occ ;
+
     bool flag = true ;
     long int cnf ;
     int rows = 0 ;
@@ -122,6 +124,16 @@ ConstantBuild formulasReader(const char* filename){
         }
     }
 
+    int lit = 0 ;
+    for (auto &myLitteral : myLitterals) {
+        //cout << "occurence de la variable: " << lit << " - " << myLitteral.size() << endl ;
+        occ.push_back((int)myLitteral.size());
+        lit++ ;
+    }
+
+    //vector<vector<int>> test ;
+
+    myProblem.setVariablesOccurence(occ);
     myProblem.setLitteralsToClauses(myLitterals);
     myProblem.setClausesToLitterals(myClauses);
 

@@ -70,7 +70,30 @@ void ConstantBuild::displayLitteralToClause(){
     cout << "=========================================\n" ;
 }
 
+void ConstantBuild::displayVariablesOccurence() {
+    cout << "displayVariablesOccurence\n"
+            "=========================================\n" ;
+    for (int i = 0; i < this->getVariablesOccurence().size(); ++i) {
+        cout << "occurence de la variable: " << i << " - " << this->variablesOccurence[i] << endl ;
+    }
+    cout << "=========================================\n" ;
+}
 
+void ConstantBuild::displayCbInstance() {
+
+    displayClauseToLitteral();
+    displayLitteralToClause();
+    displayVariablesOccurence();
+
+}
+
+const vector<int> &ConstantBuild::getVariablesOccurence() const {
+    return variablesOccurence;
+}
+
+void ConstantBuild::setVariablesOccurence(const vector<int> &variablesOccurence) {
+    ConstantBuild::variablesOccurence = variablesOccurence;
+}
 
 
 

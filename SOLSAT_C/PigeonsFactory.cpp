@@ -4,7 +4,7 @@
 
 #include "PigeonsFactory.h"
 
-PigeonsFactory::PigeonsFactory() {}
+PigeonsFactory::PigeonsFactory() = default;
 
 int PigeonsFactory::getNbPigeons() const {
     return nbPigeons;
@@ -59,7 +59,7 @@ void PigeonsFactory::pigeonsFactoryInstance(int nbPigeons){
             "c pigeonsCnf-" << nbPigeons << ".cnf\n"
                     "\n"
                     "p cnf " << n*(n-1) <<
-            " " << 2*n + (n-1)*((n-1)*n/ 2) <<
+            " " << (2*n + (n-1)*((n-1)*n/ 2))-1 <<
             "\n\n";
 
 

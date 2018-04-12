@@ -14,6 +14,7 @@
 #include <sstream>
 #include <cstring>
 #include <string>
+#include <stack>
 #include "PigeonsFactory.h"
 #include "QueensFactory.h"
 
