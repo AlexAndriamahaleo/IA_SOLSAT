@@ -86,45 +86,60 @@ int SolutionsFromDPLL::searchFirstSatisfy(DynamicBuild *data, ConstantBuild *ini
 
 void SolutionsFromDPLL::propagation(int litteral_i, DynamicBuild *data, ConstantBuild *init, bool is_back) {
 
+    /*bool is_negative = false ;
 
-    if( litteral_i%2 == 0){ // PAIR
+    if(litteral_i < 0){
+        litteral_i = litteral_i*(-1);
+        is_negative = true ;
+    }
+    */
 
-        data->setLitteralState_i(litteral_i-1, 1) ; // AFFECTION DU LITTERAL i À VRAI
+    int true_litteral_i ;
+
+    if(litteral_i < 0)
+        true_litteral_i = (abs(litteral_i-1)*2)+1 ;
+    else
+        true_litteral_i = ((litteral_i-1)*2) ;
+
+
+    if( true_litteral_i%2 == 0){ // PAIR
+
+        data->setLitteralState_i(true_litteral_i, 1) ; // AFFECTION DU LITTERAL i À VRAI
         // RECHERCHE DES CLAUSES QUI CONTIENNENT LE LITTERAL i ET METTRE À SAT ou UNSAT SI ON FAIT UN RETOUR EN ARRIÈRE
-        for (int i : init->getLitteralsToClauses()[litteral_i]) {
+        for (int i : init->getLitteralsToClauses()[true_litteral_i]) {
             data->changeClauseState(i);
         }
 
         cout << "-----"
-                "On diminue les clauses qui contiennent " << litteral_i+1 << endl ;
+                "On diminue les clauses qui contiennent " << true_litteral_i+1 << endl ;
 
         // RECHERCHE DES CLAUSES QUI CONTIENNEENT SON OPPOSÉ, FAIRE DIMINUER LA CLAUSE DE 1
-        for (int j = 0; j < init->getLitteralsToClauses()[litteral_i+1].size(); ++j) {
+        for (int j = 0; j < init->getLitteralsToClauses()[true_litteral_i+1].size(); ++j) {
 
             if(!is_back)
-                data->decreaseClauseLength(init->getLitteralsToClauses()[litteral_i+1][j]);
+                data->decreaseClauseLength(init->getLitteralsToClauses()[true_litteral_i+1][j]);
             else
-                data->increaseClauseLength(init->getLitteralsToClauses()[litteral_i+1][j]);
+                data->increaseClauseLength(init->getLitteralsToClauses()[true_litteral_i+1][j]);
         }
 
     } else { // IMPAIR
 
-        data->setLitteralState_i(litteral_i-1, 2) ; // AFFECTION DU LITTERAL i À FAUX
+        data->setLitteralState_i(true_litteral_i, 2) ; // AFFECTION DU LITTERAL i À FAUX
         // RECHERCHE DES CLAUSES QUI CONTIENNENT LE LITTERAL i ET METTRE À SAT
-        for (int i : init->getLitteralsToClauses()[litteral_i]) {
+        for (int i : init->getLitteralsToClauses()[true_litteral_i]) {
             data->changeClauseState(i);
         }
 
         cout << "-----"
-                "On diminue les clauses qui contiennent " << litteral_i-1 << endl ;
+                "On diminue les clauses qui contiennent " << true_litteral_i-1 << endl ;
 
         // RECHERCHE DES CLAUSES QUI CONTIENNEENT SON OPPOSÉ, FAIRE DIMINUER LA CLAUSE DE 1
-        for (int j = 0; j < init->getLitteralsToClauses()[litteral_i-1].size(); ++j) {
+        for (int j = 0; j < init->getLitteralsToClauses()[true_litteral_i-1].size(); ++j) {
 
             if(!is_back)
-                data->decreaseClauseLength(init->getLitteralsToClauses()[litteral_i-1][j]);
+                data->decreaseClauseLength(init->getLitteralsToClauses()[true_litteral_i-1][j]);
             else
-                data->increaseClauseLength(init->getLitteralsToClauses()[litteral_i-1][j]);
+                data->increaseClauseLength(init->getLitteralsToClauses()[true_litteral_i-1][j]);
         }
     }
 }
