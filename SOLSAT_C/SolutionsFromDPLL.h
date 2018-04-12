@@ -16,6 +16,7 @@ public:
     int searchPureLitterals(DynamicBuild *data, ConstantBuild *init);
     int searchFirstSatisfy(DynamicBuild *data, ConstantBuild *init);
     int searchFirstFail(DynamicBuild *data, ConstantBuild *init);
+    int transformVaraibleToIndex(int litteral);
     void propagation(int litteral_i, DynamicBuild *data, ConstantBuild *init, bool is_back);
     bool solverdpll(DynamicBuild *pb, ConstantBuild *init);
     void saveSolution(stack<int> sol);
