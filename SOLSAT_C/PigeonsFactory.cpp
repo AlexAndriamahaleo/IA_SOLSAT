@@ -63,8 +63,6 @@ void PigeonsFactory::pigeonsFactoryInstance(int nbPigeons){
             "\n\n";
 
 
-    //fileout << n << endl ;
-
     for (i=1; i <= n; i++) // chaque pigeon...
     {
         for (j=1; j <= n-1; j++) // ...est placé dans un des nids.

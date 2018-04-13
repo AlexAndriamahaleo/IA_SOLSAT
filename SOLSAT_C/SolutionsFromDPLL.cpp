@@ -62,18 +62,12 @@ int SolutionsFromDPLL::searchFirstFail(DynamicBuild *data, ConstantBuild *init) 
         if(data->getLitteralState()[i/2] == 0 && init->getVariablesOccurence()[i+1] > firstFail_occ && !isInSolution(tmp)){
             // PAS INSTANCIÉ ET QUE SON OCCURENCE EST SUPÉRIEUR À CELUI EN COURS
 
-            cout << "L'indice "
-                 << i
-                 << " de la variable n'est pas instancier et sont opposé apparait "
-                 << init->getVariablesOccurence()[i+1]
-                 << " fois dans la base de clause" << endl ;
             firstFail = i+1 ;
             firstFail_occ = init->getVariablesOccurence()[i+1] ;
 
         }
     }
 
-    cout << (firstFail != -1 ? "[searchFirstFail] On a trouvé l'indice de la variable à mettre à FAUX -> " : "Aucune variable trouvé ") << firstFail << " occ " << firstFail_occ << endl ;
 
     return firstFail ;
 }
@@ -97,18 +91,12 @@ int SolutionsFromDPLL::searchFirstSatisfy(DynamicBuild *data, ConstantBuild *ini
 
         if(data->getLitteralState()[i] == 0 && init->getVariablesOccurence()[i] > firstSatisfy_occ && !isInSolution(tmp)){
 
-            cout << "L'indice "
-                 << i
-                 << " de la variable n'est pas instancier et apparait "
-                 << init->getVariablesOccurence()[i]
-                 << " fois dans la base de clause" << endl ;
 
             firstSatisfy = i ;
             firstSatisfy_occ = init->getVariablesOccurence()[i] ;
         }
     }
 
-    cout << (firstSatisfy != -1 ? "[searchFirstSatisfy] On a trouvé l'indice de la variable -> " : "Aucune variable trouvé ") << firstSatisfy << " occ " << firstSatisfy_occ <<  endl ;
 
     return firstSatisfy ;
 }
@@ -144,18 +132,9 @@ int SolutionsFromDPLL::propagation(int litteral_i, DynamicBuild *data, ConstantB
         // RECHERCHE DES CLAUSES QUI CONTIENNENT LE LITTERAL i ET METTRE À SAT ou UNSAT SI ON FAIT UN RETOUR EN ARRIÈRE
 
 
-        for (int i : init->getLitteralsToClauses()[litteral_i]) {
+        for (int i : init->getLitteralsToClauses()[litteral_i])
             data->changeClauseState(i);
-            cout << "[PAIR] Clause SAT - " << i << endl;
-        }
 
-        /*tmp = transformVariableToIndex(litteral_i);
-
-        cout << "---------------- | " << tmp << endl ;
-        */
-
-        cout << "-----"
-                " [PAIR] On diminue les clauses qui contiennent la négation de " << indexToVariable << endl ;
 
         // RECHERCHE DES CLAUSES QUI CONTIENNEENT SON OPPOSÉ, FAIRE DIMINUER LA CLAUSE DE 1
 
@@ -163,8 +142,7 @@ int SolutionsFromDPLL::propagation(int litteral_i, DynamicBuild *data, ConstantB
         for (int j = 0; j < init->getLitteralsToClauses()[litteral_i+1].size(); ++j) {
 
             if(!is_back && !data->isClauseSAT(init->getLitteralsToClauses()[litteral_i+1][j])){
-                cout << "---------------- | "
-                        "On diminue la clause " << init->getLitteralsToClauses()[litteral_i+1][j] << endl ;
+
                 data->decreaseClauseLength(init->getLitteralsToClauses()[litteral_i+1][j]);
             }
             else
@@ -178,25 +156,16 @@ int SolutionsFromDPLL::propagation(int litteral_i, DynamicBuild *data, ConstantB
         data->setLitteralState_i(indexToVariable-1, 2) ; // AFFECTION DU LITTERAL i À FAUX
 
         // RECHERCHE DES CLAUSES QUI CONTIENNENT LE LITTERAL i ET METTRE À SAT
-        for (int i : init->getLitteralsToClauses()[litteral_i]) {
+
+        for (int i : init->getLitteralsToClauses()[litteral_i])
             data->changeClauseState(i);
-            cout << "[IMPAIR] Clause SAT - " << i << endl;
-        }
-
-        /*tmp = transformVariableToIndex(litteral_i);
-
-        cout << "---------------- | " << tmp << endl ;
-         */
-
-        cout << "-----"
-                "[IMPAIR] On diminue les clauses qui contiennent le normal de " << indexToVariable << endl ;
 
         // RECHERCHE DES CLAUSES QUI CONTIENNEENT SON OPPOSÉ, FAIRE DIMINUER LA CLAUSE DE 1
+
         for (int j = 0; j < init->getLitteralsToClauses()[litteral_i-1].size(); ++j) {
 
             if(!is_back && !data->isClauseSAT(init->getLitteralsToClauses()[litteral_i-1][j])){
-                cout << "---------------- | "
-                        "On diminue la clause " << init->getLitteralsToClauses()[litteral_i-1][j] << endl ;
+
                 data->decreaseClauseLength(init->getLitteralsToClauses()[litteral_i-1][j]);
             }
             else
@@ -214,27 +183,13 @@ bool SolutionsFromDPLL::solverdpll(DynamicBuild *pb, ConstantBuild *init) {
     bool is_back = false ;
     int depile_var ;
 
-    //init->displayCbInstance();
 
     while(!pb->allVariableTested()){
 
-        //cout << "----------------- DEBUT DE BOUCLE -------------------" << endl ;
-
-        //pb->displayInstance();
-
-        //displayCurrentSolution();
-
-        //cout << "---------------------- BREAKPOINT -----------------------" << endl ;
 
         if(((current_variable = searchMonolitteral(pb, init)) != -1) || ((current_variable = searchPureLitterals(pb, init)) != -1)){
             // PROPAGATION MONO LITTERAL ou PROPAGATION LITERRAL PUR
 
-
-            //propagation(current_variable, pb, init, is_back);
-
-            cout << "On PROPAGE la variable (UNIT ou MONO) d'indice " << current_variable << " a VRAI" <<  endl ;
-
-            //currentAffection.push(current_variable);
             if(current_variable%2 == 0)
                 currentAffectation.push_front(propagation(current_variable, pb, init, is_back));
             else
@@ -242,7 +197,6 @@ bool SolutionsFromDPLL::solverdpll(DynamicBuild *pb, ConstantBuild *init) {
 
         } else {
 
-            //cout << init->getNbLitterals() << endl ;
 
             current_variable = searchFirstSatisfy(pb, init); // RENVOIE L'INDICE D'UNE VARIABLE VARIABLE
 
@@ -255,44 +209,28 @@ bool SolutionsFromDPLL::solverdpll(DynamicBuild *pb, ConstantBuild *init) {
 
             if(current_variable == current_variable_fail){ // SI MÊME INDICE
 
-                cout << "FirstSatisfy == FirstFail | On PROPAGE la variable d'indice " << current_variable_fail << " a FAUX" << endl ;
                 // PROPAGATION DE L'AFFECTATION À FAUX DE current_variable_fail
 
-                //propagation(current_variable_fail, pb, init, is_back);
-
-                //currentAffection.push(-current_variable_fail);
                 currentAffectation.push_front(-propagation(current_variable_fail, pb, init, is_back));
 
 
             } else if(init->getVariablesOccurence()[current_variable] > init->getVariablesOccurence()[current_variable_fail]){
                 // SI L'OCCURENCE DE [FirstSatisfy] EST PLUS GRANDE OU ÉGAL À L'OCCURENCE DE [FirstFail] , ON PROPAGE [FirstSatisfy]
 
-                cout << "(2) On PROPAGE la variable qui a pour variable d'indice " << current_variable << " a VRAI" << endl ;
                 // PROPAGATION DE L'AFFECTATION À VRAI DE current_variable
 
-                //propagation(current_variable, pb, init, is_back);
-
-                //currentAffection.push(current_variable);
                 currentAffectation.push_front(propagation(current_variable, pb, init, is_back));
 
 
             } else {
                 // SINON ON PROPAGE [FirstFail]
 
-
-                cout << "(3) On PROPAGE la variable qui a pour variable d'indice " << current_variable_fail << " a FAUX" << endl ;
                 // PROPAGATION DE L'AFFECTATION À FAUX DE current_variable_fail
 
-                //propagation(current_variable_fail, pb, init, is_back);
-
-                //currentAffection.push(-current_variable_fail);
                 currentAffectation.push_front(-propagation(current_variable_fail, pb, init, is_back));
 
             }
         }
-
-        //pb->displayInstance();
-
 
 
         if(pb->containsEmptyClause() ){
@@ -308,9 +246,6 @@ bool SolutionsFromDPLL::solverdpll(DynamicBuild *pb, ConstantBuild *init) {
 
             is_back = true ;
 
-            cout << "IL Y A UNE CLAUSE VIDE - INITIATION AU RETOUR EN ARRIÈRE"  << endl ;
-
-            cout << currentAffectation.front() << endl ;
 
             depile_var = currentAffectation.front() ;
             currentAffectation.pop_front();
@@ -326,23 +261,19 @@ bool SolutionsFromDPLL::solverdpll(DynamicBuild *pb, ConstantBuild *init) {
                 currentAffectation.push_front(propagation(current_variable, pb, init, is_back));
             }
 
-            displayCurrentSolution();
+            //displayCurrentSolution();
 
-            //return false;
+            return false;
         }
 
-        displayCurrentSolution();
-
-        //return false;
-        //cout << "----------------- FIN DE BOUCLE -------------------" << endl ;
     }
 
+    //displayCurrentSolution();
     return true ;
 }
 
 void SolutionsFromDPLL::saveSolution(stack<int> sol) {
 
-    cout << "taille de la pile - " << sol.size() << endl ;
     vector<int> aff ;
 
     while( !sol.empty() ){
@@ -367,10 +298,7 @@ void SolutionsFromDPLL::displayOneSolution(int i) {
 }
 
 void SolutionsFromDPLL::displayCurrentSolution() {
-    cout << "Solution courante :" << endl ;
-    /*for (stack<int> dump = currentAffection; !dump.empty(); dump.pop())
-        cout << dump.top() << '\n';
-    */
+    cout << "Solution :" << endl ;
     for (int i : currentAffectation) {
         cout << i << endl ;
     }
@@ -379,12 +307,9 @@ void SolutionsFromDPLL::displayCurrentSolution() {
 bool SolutionsFromDPLL::isInSolution(int litteral) { // VRAI SI LE LITTERAL A ÉTÉ INSTANCIÉ VRAI ou FAUX
     for (int i : currentAffectation) {
         if(abs(i) == litteral){
-            cout << "------------------ La variable " << abs(i) << " est déjà dans la solution" << endl ;
             return true ;
         }
     }
-
-    cout << "La variable " << litteral << " n'est pas dans la solution" << endl ;
     return false ;
 }
 

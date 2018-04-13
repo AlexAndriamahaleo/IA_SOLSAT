@@ -11,11 +11,7 @@ void DynamicBuild:: initInstance(ConstantBuild pb) {
     for (int i = 0; i < pb.getNbClauses(); ++i) {
         this->clausesState.push_back(false);
         this->clausesLength.push_back((int) pb.getClausesToLitterals()[i].size());
-        //cout << "clause - " << i << " de taille " << pb.getClausesToLitterals()[i].size() << endl ;
     }
-
-    //cout << pb.getNbLitterals() << endl ;
-
     for (int j = 0; j < pb.getNbLitterals()/2; ++j) {
         this->litteralState.push_back(0);
     }
@@ -38,7 +34,7 @@ bool DynamicBuild::isClauseSAT(int clause) {
 bool DynamicBuild::containsEmptyClause() {
     for (int i = 0; i < clausesState.size(); ++i) {
         if(clausesLength[i] == 0 && clausesState[i] == 0){
-            cout << "La clause " << i << " est vide" << endl ;
+
             return true ;
         }
     }
@@ -69,7 +65,7 @@ void DynamicBuild::exploreBranchOfLitteral(int litteral) {
     }
 
     if(litteralState[litteral] == 2) {
-        cout << "Le litteral " << litteral << " a déjà été instancié à ses deux valeurs de vérité" << endl ;
+
         //return -1;
     }
 }

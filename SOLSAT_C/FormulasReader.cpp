@@ -41,13 +41,11 @@ ConstantBuild formulasReader(const char* filename){
 
                 if(strlen(line.c_str()) != 0){
 
-                    //cout << "clause - " << rows << endl;
-
                     pch = strtok((char *)line.c_str()," ");
 
                     while (pch != nullptr)
                     {
-                        //int tmp = atoi(pch);
+
                         long int tmp = strtol(pch, &pch, 10);
 
                         if(tmp > 0 || tmp < 0){
@@ -56,17 +54,10 @@ ConstantBuild formulasReader(const char* filename){
                             if(tmp > 0){
                                 floorIndex = (tmp - 1)*2 ;
 
-                                //cout << "insertion de " << rows << " dans " << floorIndex << endl;
-                                //pb_tmp = myProblem.getClausesToLitterals() ;
-                                //pb_tmp[floorIndex].push_back(rows);
-
                                 myLitterals[floorIndex].push_back(rows);
 
                             } else {
                                 floorIndex = (((tmp)*2)+1)*(-1) ;
-
-                                //cout << "insertion de " << rows << " dans " << floorIndex%2 << endl;
-                                //myVariables.myLitterals[floorIndex].push_back(rows);
 
                                 myLitterals[floorIndex].push_back(rows);
 
@@ -75,7 +66,6 @@ ConstantBuild formulasReader(const char* filename){
 
                             myClauses.push_back(litteral);
 
-                            //myProblem.myClause.push_back(litteral);
 
                             litteral.clear() ;
                         }
@@ -95,22 +85,14 @@ ConstantBuild formulasReader(const char* filename){
 
                     if(cnf){
                         if(flag){
-                            //myProblem.nbVariables = (int) cnf ;
+
                             myProblem.setNbVariables((int) cnf);
                             myProblem.setNbLitterals(myProblem.getNbVariables()*2);
 
-                            //cout << myProblem.getNbVariables() << " - " << myProblem.getNbLitterals() << endl ;
-
-                            //myVariables.nbLitterals = myProblem.nbVariables*2 ;
-                            //myVariables.nbVariables = myProblem.nbVariables ;
                             for (int i = 0; i < myProblem.getNbLitterals(); ++i) {
-                                //myVariables.myLitterals.push_back(litterals);
-                                //pb_tmp = myProblem.getLitteralsToClauses() ;
-                                //pb_tmp.push_back(litterals);
 
                                 myLitterals.push_back(litterals);
 
-                                //myProblem.setLitteralsToClauses(litterals);
                             }
                         } else
                             myProblem.setNbClauses((int) cnf) ;
@@ -126,12 +108,10 @@ ConstantBuild formulasReader(const char* filename){
 
     int lit = 0 ;
     for (auto &myLitteral : myLitterals) {
-        //cout << "occurence de la variable: " << lit << " - " << myLitteral.size() << endl ;
+
         occ.push_back((int)myLitteral.size());
         lit++ ;
     }
-
-    //vector<vector<int>> test ;
 
     myProblem.setVariablesOccurence(occ);
     myProblem.setLitteralsToClauses(myLitterals);
@@ -140,10 +120,6 @@ ConstantBuild formulasReader(const char* filename){
     cout << "Nombre de variables:" << myProblem.getNbVariables() << endl;
     cout << "Nombre de clauses: " << myProblem.getNbClauses() << endl;
 
-
-    /*myProblem.displayClauseToLitteral();
-    cout << endl ;
-    myProblem.displayLitteralToClause();*/
 
     myReadFile.close();
 

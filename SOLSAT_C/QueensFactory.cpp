@@ -33,14 +33,13 @@ int nbCombinaisons(int nbElements){
 int nbClausesCnf(int nbDames){
     int posibility_rows_col = 2*nbDames ;
     int rows_col = 2*(nbDames*nbCombinaisons(nbDames));
-    //cout << "Combinaison pour lignes et colonnes: " << rows_col << endl ;
+
     int diag_spe =  2*(nbCombinaisons(nbDames));
-    //cout << "Combinaison pour les grandes diagonales: " << diag_spe << endl ;
+
     int other_diag = 0 ;
-    for (int i = nbDames-1; i != 1; i--) {
+    for (int i = nbDames-1; i != 1; i--)
         other_diag += 4*nbCombinaisons(i);
-        //cout << "Combinaison de " << i << " éléments | autre diag: " << other_diag << endl;
-    }
+
     return posibility_rows_col + rows_col + diag_spe + other_diag ;
 }
 
@@ -131,7 +130,7 @@ void QueensFactory::queensFactoryInstance(int nbQueens){
         step = l+1 ;
         for (j=nbQueens; j < nbQueens*nbQueens; j+=nbQueens){
             if(j+step <= nbQueens*nbQueens && l%nbQueens != 0 && (j+step)%nbQueens != 1){
-                //cout << (j+step)%nbQueens << " - " << l%nbQueens << " - " << l << endl ;
+
                 fileout << "-"<< l << " -" << j+step << " 0" << endl ;
                 nbClause++ ;
                 step++ ;
@@ -145,7 +144,7 @@ void QueensFactory::queensFactoryInstance(int nbQueens){
         step = m-1 ;
         for (int l = nbQueens; l < nbQueens*nbQueens; l+=nbQueens) {
             if(m%nbQueens != 1 && l+step <= nbQueens*nbQueens && (l+step)%nbQueens != 0){
-                //cout << m << " - " << l+step  << " - " << l << endl;
+
                 fileout << "-"<< m << " -" << l+step << " 0" << endl ;
                 nbClause++ ;
                 step-- ;
@@ -153,7 +152,6 @@ void QueensFactory::queensFactoryInstance(int nbQueens){
         }
     }
 
-    //cout << "nombre de clause écrite: " << nbClause << endl ;
 
     fileout.close();
 
