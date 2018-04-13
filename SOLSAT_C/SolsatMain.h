@@ -9,5 +9,6 @@
 #include "FormulasReader.h"
 #include "DynamicBuild.h"
 #include "SolutionsFromDPLL.h"
+#include <time.h>
 
 #endif //SOLSAT_C_SOLSATMAIN_H

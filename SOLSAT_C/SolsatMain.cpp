@@ -7,6 +7,7 @@
 int main() {
 
     string prefix ;
+    clock_t start, end ;
 
     prefix = whichProblem() ;
     const char* filename = prefix.c_str() ;
@@ -14,6 +15,8 @@ int main() {
     ConstantBuild initProblem;
     DynamicBuild problemInstance;
     SolutionsFromDPLL solutionInstance;
+
+    start = clock();
 
     initProblem = formulasReader(filename);
 
@@ -34,6 +37,10 @@ int main() {
     solutionInstance.displayCurrentSolution();
 
     cout << (formulaResultat ? "SATISFAISABLE" : "UNSATISFAISABLE") << endl ;
+
+    end = clock();
+
+    cout << "Temps d'éxecution du programme SOLSAT - " << (float) (end-start)/CLOCKS_PER_SEC << " sec." << endl ;
 
 
     return 0;
