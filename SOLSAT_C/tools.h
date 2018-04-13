@@ -15,6 +15,7 @@
 #include <cstring>
 #include <string>
 #include <stack>
+#include <random>
 #include "PigeonsFactory.h"
 #include "QueensFactory.h"
 

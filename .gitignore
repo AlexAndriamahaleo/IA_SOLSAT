@@ -3,9 +3,17 @@
 SOLSAT/*
 SOLSAT_C/dames/*
 SOLSAT_C/pigeons/*
+SOLSAT_C/random/*
 .idea/
 cmake-build-debug/*
 *.txt
 a.out
 infix2postfix.c
 *.pdf
+ANDRIAMAHALEOAlex-ELYOUSFIAyoub.tex
+ANDRIAMAHALEOAlex-ELYOUSFIAyoub.tex.backup
+ANDRIAMAHALEOAlex-ELYOUSFIAyoub.toc
+ANDRIAMAHALEOAlex-ELYOUSFIAyoub.out
+ANDRIAMAHALEOAlex-ELYOUSFIAyoub.log
+.ANDRIAMAHALEOAlex-ELYOUSFIAyoub.tex.kate-swp
+ANDRIAMAHALEOAlex-ELYOUSFIAyoub.aux

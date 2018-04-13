@@ -9,16 +9,9 @@ int SolutionsFromDPLL::searchMonolitteral(DynamicBuild *data, ConstantBuild *ini
 
     for (int i = 0; i < init->getNbClauses(); ++i) {
         if(data->isMonolitteral(i) && !data->isClauseSAT(i)){
-            cout << "La clause " << i << " contient un mono litteral" << endl ;
 
             for (int j : init->getClausesToLitterals()[i]) {
-                /*if(abs(j) != abs(currentAffection.top()))
-                    return j;
-                */
-                /*if(abs(j) != abs(currentAffectation.front())){
-                    cout << j << " - " << currentAffectation.front() << endl ;
-                    return j ;
-                }*/
+
                 if(!isInSolution(abs(j)))
                     return transformVariableToIndex(j) ;
             }
@@ -38,20 +31,16 @@ int SolutionsFromDPLL::searchPureLitterals(DynamicBuild *data, ConstantBuild *in
             if((i%2) == 0){ // QU'IL EST PAIR (NORMAL)
 
                 if(init->getVariablesOccurence()[i+1] == 0){
-                    cout << "littéral pur trouvé " << i << " !!" << endl ;
                     return i ;
                 }
             } else { // QU'IL EST IMPAIR (NÉGATION)
 
                 if(init->getVariablesOccurence()[i-1] == 0){
-                    cout << "littéral pur trouvé " << i << " !!" << endl ;
                     return i ;
                 }
             }
         }
     }
-
-    cout << "Aucun littéral pur trouvé" << endl ;
 
     return -1;
 }
@@ -129,11 +118,11 @@ int SolutionsFromDPLL::transformVariableToIndex(int litteral) {
 
     if(litteral < 0){
         true_litteral_i = ((abs(litteral)-1)*2)+1 ;
-        cout << litteral << " devient " << true_litteral_i << endl ;
+        //cout << litteral << " devient " << true_litteral_i << endl ;
     }
     else{
         true_litteral_i = ((litteral-1)*2) ;
-        cout << litteral << " devient " << true_litteral_i << endl ;
+        //cout << litteral << " devient " << true_litteral_i << endl ;
     }
 
     return true_litteral_i ;
@@ -221,10 +210,9 @@ int SolutionsFromDPLL::propagation(int litteral_i, DynamicBuild *data, ConstantB
 bool SolutionsFromDPLL::solverdpll(DynamicBuild *pb, ConstantBuild *init) {
 
     int current_variable ;
-    int current_variable_mono ;
-    int current_variable_pur ;
     int current_variable_fail ;
     bool is_back = false ;
+    int depile_var ;
 
     //init->displayCbInstance();
 
@@ -322,9 +310,25 @@ bool SolutionsFromDPLL::solverdpll(DynamicBuild *pb, ConstantBuild *init) {
 
             cout << "IL Y A UNE CLAUSE VIDE - INITIATION AU RETOUR EN ARRIÈRE"  << endl ;
 
+            cout << currentAffectation.front() << endl ;
+
+            depile_var = currentAffectation.front() ;
+            currentAffectation.pop_front();
+
+            if(depile_var > 0){
+                // AFFECTATION DE LA VARIABLE AU NÉGATIF
+                current_variable = ((depile_var-1)*2)+1 ;
+                currentAffectation.push_front(-propagation(current_variable, pb, init, is_back));
+
+            } else {
+                // AFFECTATION DE LA VARIABLE AU POSITIF
+                current_variable = ((depile_var)*2)+1 ;
+                currentAffectation.push_front(propagation(current_variable, pb, init, is_back));
+            }
+
             displayCurrentSolution();
 
-            return false;
+            //return false;
         }
 
         displayCurrentSolution();
